@@ -1,12 +1,49 @@
 <%- include('./partials/header') %>
 
-<div class="card p-4 text-center">
-  <h1 class="fw-bold text-primary">Welcome to CRUD App</h1>
-  <p class="lead">Manage your <b>Suppliers</b> and <b>Products</b> easily.</p>
-  <div class="mt-4">
-    <a href="/suppliers" class="btn btn-lg btn-outline-primary me-2">Manage Suppliers</a>
-    <a href="/products" class="btn btn-lg btn-outline-success">Manage Products</a>
+<div class="card p-4">
+  <h2 class="fw-bold text-primary mb-4"><i class="bi bi-shop"></i> Product Catalog</h2>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <form class="d-flex" method="get" action="/">
+        <input class="form-control me-2" type="search" name="q" placeholder="🔍 Search product..." value="<%= query %>">
+        <button class="btn btn-outline-primary">Search</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <form method="get" action="/">
+        <select name="supplier" class="form-select" onchange="this.form.submit()">
+          <option value="">-- All Suppliers --</option>
+          <% suppliers.forEach(s => { %>
+            <option value="<%= s._id %>" <%= supplier && supplier==s._id ? 'selected' : '' %>>
+              <%= s.name %>
+            </option>
+          <% }) %>
+        </select>
+      </form>
+    </div>
   </div>
+
+  <table class="table table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Supplier</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(p => { %>
+        <tr>
+          <td><i class="bi bi-box"></i> <%= p.name %></td>
+          <td class="text-success fw-bold"><%= p.price.toLocaleString('vi-VN') %> ₫</td>
+          <td><%= p.quantity %></td>
+          <td><%= p.supplierId ? p.supplierId.name : 'N/A' %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
 </div>
 
 <%- include('./partials/footer') %>

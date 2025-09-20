@@ -5,9 +5,7 @@ exports.index = async (req, res) => {
   res.render('suppliers/index', { suppliers });
 };
 
-exports.newForm = (req, res) => {
-  res.render('suppliers/new');
-};
+exports.newForm = (req, res) => res.render('suppliers/form', { supplier: {} });
 
 exports.create = async (req, res) => {
   await Supplier.create(req.body);
@@ -16,7 +14,7 @@ exports.create = async (req, res) => {
 
 exports.editForm = async (req, res) => {
   const supplier = await Supplier.findById(req.params.id);
-  res.render('suppliers/edit', { supplier });
+  res.render('suppliers/form', { supplier });
 };
 
 exports.update = async (req, res) => {

@@ -25,34 +25,38 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: {
-    maxAge: 1000 * 60 * 60,
+    maxAge: 1000 * 60 * 60, // 1h
     httpOnly: true,
     secure: false
   }
 }));
 
-// 🔹 Import routes
-const supplierRoutes = require('./routes/supplierRoutes');
-const productRoutes = require('./routes/productRoutes');
-const authRoutes = require('./routes/authRoutes');
-
-// 🔹 Đăng ký routes
-app.use('/suppliers', supplierRoutes);
-app.use('/products', productRoutes);
-app.use('/auth', authRoutes);
-
-// Route mặc định
-app.get('/', (req, res) => {
-  res.render('index');
+// 🔹 luôn có biến user cho mọi view
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
 });
 
-// Kết nối DB
+// Import routes
+const { ensureAuth } = require('./middlewares/auth');
+const supplierRoutes = require('./routes/supplier');
+const productRoutes = require('./routes/product');
+const authRoutes = require('./routes/auth');
+const indexRoutes = require('./routes/index');
+
+// Đăng ký routes
+app.use('/suppliers', ensureAuth, supplierRoutes);
+app.use('/products', ensureAuth, productRoutes);
+app.use('/auth', authRoutes);
+app.use('/', indexRoutes);
+
+// Kết nối MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log("✅ MongoDB connected"))
 .catch(err => console.log(err));
 
 // Server start
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running at: http://localhost:${PORT}`);
 });

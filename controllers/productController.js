@@ -8,7 +8,7 @@ exports.index = async (req, res) => {
 
 exports.newForm = async (req, res) => {
   const suppliers = await Supplier.find();
-  res.render('products/new', { suppliers });
+  res.render('products/form', { product: {}, suppliers });
 };
 
 exports.create = async (req, res) => {
@@ -19,7 +19,7 @@ exports.create = async (req, res) => {
 exports.editForm = async (req, res) => {
   const product = await Product.findById(req.params.id);
   const suppliers = await Supplier.find();
-  res.render('products/edit', { product, suppliers });
+  res.render('products/form', { product, suppliers });
 };
 
 exports.update = async (req, res) => {

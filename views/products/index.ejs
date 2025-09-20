@@ -1,38 +1,30 @@
 <%- include('../partials/header') %>
-
 <div class="card p-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="fw-bold text-primary">Products</h2>
-    <a href="/products/new" class="btn btn-success">➕ Add Product</a>
+  <div class="d-flex justify-content-between mb-3">
+    <h2 class="fw-bold text-primary"><i class="bi bi-box-seam"></i> Products</h2>
+    <a href="/products/new" class="btn btn-success"><i class="bi bi-plus-circle"></i> Add Product</a>
   </div>
-
   <table class="table table-hover align-middle">
-    <thead class="table-dark">
+    <thead>
       <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Supplier</th>
-        <th class="text-center">Actions</th>
+        <th><i class="bi bi-tag"></i> Name</th>
+        <th><i class="bi bi-cash-stack"></i> Price</th>
+        <th><i class="bi bi-stack"></i> Quantity</th>
+        <th><i class="bi bi-truck"></i> Supplier</th>
+        <th><i class="bi bi-gear"></i> Actions</th>
       </tr>
     </thead>
     <tbody>
       <% products.forEach(p => { %>
         <tr>
-          <td><a href="/products/<%= p._id %>/edit" class="text-decoration-none fw-semibold"><%= p.name %></a></td>
-          <td><%= p.price.toLocaleString('vi-VN') %> ₫</td>
+          <td><%= p.name %></td>
+          <td class="text-success fw-bold"><%= p.price.toLocaleString('vi-VN') %> ₫</td>
           <td><%= p.quantity %></td>
+          <td><%= p.supplierId ? p.supplierId.name : 'N/A' %></td>
           <td>
-            <% if (p.supplierId) { %>
-              <a href="/suppliers/<%= p.supplierId._id %>/edit" class="text-decoration-none"><%= p.supplierId.name %></a>
-            <% } else { %>
-              <span class="text-muted">N/A</span>
-            <% } %>
-          </td>
-          <td class="text-center">
-            <a href="/products/<%= p._id %>/edit" class="btn btn-warning btn-sm">✏️ Edit</a>
+            <a href="/products/<%= p._id %>/edit" class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
             <form method="POST" action="/products/<%= p._id %>?_method=DELETE" style="display:inline;">
-              <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
+              <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
             </form>
           </td>
         </tr>
@@ -40,5 +32,4 @@
     </tbody>
   </table>
 </div>
-
 <%- include('../partials/footer') %>
