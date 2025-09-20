@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+
+<div class="card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold text-primary">Suppliers</h2>
+    <a href="/suppliers/new" class="btn btn-success">➕ Add Supplier</a>
+  </div>
+
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% suppliers.forEach(s => { %>
+        <tr>
+          <td>
+            <a href="/suppliers/<%= s._id %>/edit" class="text-decoration-none fw-semibold"><%= s.name %></a>
+          </td>
+          <td><%= s.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3") %></td>
+          <td><%= s.address %></td>
+          <td class="text-center">
+            <a href="/suppliers/<%= s._id %>/edit" class="btn btn-warning btn-sm">✏️ Edit</a>
+            <form method="POST" action="/suppliers/<%= s._id %>?_method=DELETE" style="display:inline;">
+              <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../partials/footer') %>
